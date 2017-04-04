@@ -34,6 +34,44 @@ module.exports = function (options) {
     value: ''
   }];
 
+  var subCategories = {
+    'pricing-engine': [{
+      name: 'Vocational & High-School',
+      value: 'vocational-high-school'
+    }, {
+      name: 'Expanding Pricing Engine',
+      value: 'engine-expansion'
+    }, {
+      name: 'Package Concept',
+      value: 'packages'
+    }, {
+      name: 'Uncategorized',
+      value: ''
+    }],
+
+    'api-v2': [{
+      name: 'Legacy Conversion v1 -> v2',
+      value: 'legacy-conversion'
+    }, {
+      name: 'Development of API',
+      value: 'v2-development'
+    }, {
+      name: 'Webhook Support',
+      value: 'webhook-support'
+    }, {
+      name: 'Uncategorized',
+      value: ''
+    }],
+
+    'data-warehousing-tracking': [{
+      name: 'Consolidating Dispersed Data',
+      value: 'data-collection'
+    }, {
+      name: 'Uncategorized',
+      value: ''
+    }]
+  };
+
   return {
     // When a user runs `git cz`, prompter will
     // be executed. We pass you cz, which currently
@@ -80,6 +118,18 @@ module.exports = function (options) {
           message: 'Select the project this commit should fall into:',
           choices: projects
         }, {
+          when: function(response) {
+            return  response.project === 'pricing-engine' || 
+                    response.project === 'api-v2' || 
+                    response.project === 'data-warehousing-tracking'
+          },
+          type: 'list',
+          name: 'problem',
+          message: 'Choose a sub-category of the project',
+          choices: function(response) {
+            return subCategories[response.project]
+          }
+        }, {
           type: 'input',
           name: 'footer',
           message: 'List any breaking changes or issues closed by this change:\n'
@@ -104,6 +154,7 @@ module.exports = function (options) {
         // Add SRED.io code
         var hours = '';
         var project = '';
+        var subProject = '';
 
         if (answers.hours.trim()) {
           hours = '-d ' + answers.hours.trim();
@@ -111,12 +162,16 @@ module.exports = function (options) {
 
         if (answers.project.trim()) {
           project = '-p ' + answers.project;
+
+          if (answers.problem.trim()) {
+            subProject = '-c ' + answers.problem
+          }
         }
 
         var sred = ''
 
         if (hours || project) {
-          sred = 'sred ' + [hours, project].join(' ')
+          sred = 'sred ' + [hours, project, subProject].join(' ')
         }
 
         var footer = wrap(answers.footer, wrapOptions);
