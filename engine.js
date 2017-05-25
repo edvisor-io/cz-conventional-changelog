@@ -45,6 +45,9 @@ module.exports = function (options) {
       name: 'Package Concept',
       value: 'packages'
     }, {
+      name: 'Elasticsearch R&D',
+      value: 'elasticsearch'
+    }, {
       name: 'Uncategorized',
       value: ''
     }],
