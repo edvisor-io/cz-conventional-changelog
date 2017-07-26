@@ -30,6 +30,9 @@ module.exports = function (options) {
     name: 'Data Warehousing and tracking',
     value: 'data-warehousing-tracking'
   }, {
+    name: 'B2C project',
+    value: 'b2c-project'
+  }, {
     name: 'Other (or if you have no idea)',
     value: ''
   }];
