@@ -141,7 +141,6 @@ module.exports = function (options) {
           message: 'List any breaking changes or issues closed by this change:\n'
         }
       ]).then(function(answers) {
-
         var maxLineWidth = 100;
 
         var wrapOptions = {
@@ -167,9 +166,8 @@ module.exports = function (options) {
         }
 
         if (answers.project.trim()) {
-          project = '-p ' + answers.project;
-
-          if (answers.problem.trim()) {
+          project = '-p ' + answers.project
+          if (answers.problem && answers.problem.trim()) {
             subProject = '-c ' + answers.problem
           }
         }
