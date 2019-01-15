@@ -116,6 +116,10 @@ module.exports = function (options) {
           message: 'Provide a longer description of the change:\n'
         }, {
           type: 'input',
+          name: 'taskNumber',
+          message: 'Provide the task number of the current change ("ES-???"):\n'
+        }, {
+          type: 'input',
           name: 'hours',
           message: 'Provide the # of hours spent on this commit (ex: "2" or "2.5"):\n'
         }, {
@@ -125,8 +129,8 @@ module.exports = function (options) {
           choices: projects
         }, {
           when: function(response) {
-            return  response.project === 'pricing-engine' || 
-                    response.project === 'api-v2' || 
+            return  response.project === 'pricing-engine' ||
+                    response.project === 'api-v2' ||
                     response.project === 'data-warehousing-tracking'
           },
           type: 'list',
@@ -151,7 +155,7 @@ module.exports = function (options) {
         };
 
         // Hard limit this line
-        var head = (answers.type + ': ' + answers.subject.trim()).slice(0, maxLineWidth);
+        var head = (answers.type + '-' + answers.taskNumber + ': ' + answers.subject.trim()).slice(0, maxLineWidth);
 
         // Wrap these lines at 100 characters
         var body = wrap(answers.body, wrapOptions);
@@ -178,9 +182,14 @@ module.exports = function (options) {
           sred = 'sred ' + [hours, project, subProject].join(' ')
         }
 
+        var jiraTimeTracking = ''
+        if (hours || answers.taskNumber) {
+          jiraTimeTracking = '#time ' + hours + 'h'
+        }
+
         var footer = wrap(answers.footer, wrapOptions);
 
-        commit([head, body, footer, sred].join('\n\n'));
+        commit([head, body, footer, sred, jiraTimeTracking].join('\n\n'));
       });
     }
   };
