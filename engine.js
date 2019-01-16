@@ -183,8 +183,8 @@ module.exports = function (options) {
         }
 
         var jiraTimeTracking = ''
-        if (hours || answers.taskNumber) {
-          jiraTimeTracking = '#time ' + hours + 'h'
+        if (answers.hours || answers.taskNumber) {
+          jiraTimeTracking = '#time ' + answers.hours.trim() + 'h'
         }
 
         var footer = wrap(answers.footer, wrapOptions);
